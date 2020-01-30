@@ -6,23 +6,23 @@
 package org.acme;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Scanner;
+import javax.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 /**
  *
  * @author Rasmu
  */
-public class Tester {
-/*
-    Gson gson = new Gson();
+@ApplicationScoped
+public class CvrEnricher {
 
-    public String getHttpData(String url) throws MalformedURLException, IOException {
+    public String getJsonData(String url) throws MalformedURLException, IOException {
         URL getUrl = new URL(url);
         Scanner scanner = new Scanner(getUrl.openStream());
         String response = scanner.useDelimiter("\\Z").next();
@@ -31,13 +31,21 @@ public class Tester {
         return response;
     }
 
-    public void tester() throws IOException {
-        String cvr = "convergens";
+    @Incoming("cvr-enrichment")
+    public void enrichCvr(String msg) throws IOException, Exception {
+        Gson gson = new Gson();
         String url = "https://cvrapi.dk/api?country=dk&search=";
+        
+        
+        //Map cvr = gson.fromJson(msg, Map.class);
+        //msgJson.get("cvr");
+        String cvr = "convergens";
+        System.out.println("CVR___________: \n" + cvr + "\n");
+        
 
-        String cvrString = getHttpData(url + cvr);
-
+        String cvrString = getJsonData(url + cvr);
         Map cvrJson = gson.fromJson(cvrString, Map.class);
+        
         
         JsonObject companyInfo = new JsonObject();
         companyInfo.add("name", gson.toJsonTree(cvrJson.get("name")));
@@ -47,14 +55,7 @@ public class Tester {
         companyInfo.add("phone", gson.toJsonTree(cvrJson.get("phone")));
         
         
-        System.out.println(companyInfo);
+        System.out.println("COMPANY INFO___________: \n" + companyInfo + "\n");
 
     }
-
-    public static void main(String[] args) throws IOException {
-        Tester test = new Tester();
-        test.tester();
-
-    }
-    */
 }
