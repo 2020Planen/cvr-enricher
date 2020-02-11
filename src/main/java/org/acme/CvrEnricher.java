@@ -24,6 +24,7 @@ public class CvrEnricher {
 
     public String getJsonData(String url) throws MalformedURLException, IOException {
         URL getUrl = new URL(url);
+        
         Scanner scanner = new Scanner(getUrl.openStream());
         String response = scanner.useDelimiter("\\Z").next();
         scanner.close();
@@ -32,13 +33,13 @@ public class CvrEnricher {
     }
 
     @Incoming("cvr-enrichment")
-    public void enrichCvr(String msg) throws IOException, Exception {
+    public void enrichCvr(String content) throws IOException, Exception {
         Gson gson = new Gson();
+        Message msg = gson.fromJson(content, Message.class);
+        msg.startLog("cvr-enrichment");
         String url = "https://cvrapi.dk/api?country=dk&search=";
         
         
-        //Map cvr = gson.fromJson(msg, Map.class);
-        //msgJson.get("cvr");
         String cvr = "convergens";
         System.out.println("CVR___________: \n" + cvr + "\n");
         
@@ -54,8 +55,11 @@ public class CvrEnricher {
         companyInfo.add("city", gson.toJsonTree(cvrJson.get("city")));
         companyInfo.add("phone", gson.toJsonTree(cvrJson.get("phone")));
         
-        
-        System.out.println("COMPANY INFO___________: \n" + companyInfo + "\n");
 
+        System.out.println("COMPANY INFO___________: \n" + companyInfo + "\n");
+        msg.appendJson("cvrInfo", companyInfo);
+
+        
+        msg.sendToKafkaQue();
     }
 }

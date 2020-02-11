@@ -63,8 +63,23 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-reactive-messaging</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>dk.convergens.mmr</groupId>
+            <artifactId>mmr-json-information-class</artifactId>
+            <version>1.3.2</version> 
+        </dependency>
     
     </dependencies>
+    
+    <repositories>
+        <repository>
+            <id>convergens-repository</id>
+            <name>Internet mirror for archiva.convergens.dk</name>
+            <url>http://archiva.convergens.dk:8080/repository/internal/</url>
+        </repository>
+    </repositories>
+    
     <build>
         <plugins>
             <plugin>

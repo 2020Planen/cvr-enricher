@@ -6,8 +6,6 @@
 package org.acme;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -20,7 +18,7 @@ import java.util.Scanner;
  * @author Rasmu
  */
 public class Tester {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    Gson gson = new Gson();
 
     public String getHttpData(String url) throws MalformedURLException, IOException {
         URL getUrl = new URL(url);
